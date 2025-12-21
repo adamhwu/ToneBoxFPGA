@@ -18,7 +18,7 @@ Key features:
 - Effects modeler
     - supply the pedal with clean and modified signal, FPGA will recreate that effect and store it as a preset, allowing users to “steal” pedals
 
-![Kria KV260 FPGA](Audio%20Project/image.png)
+![Kria KV260 FPGA](Images/image.png)
 
 Kria KV260 FPGA
 
@@ -34,7 +34,7 @@ Key Features:
 - setup is equivalent to a single effects pedal
 - [a demo from Smashing Pumpkins’ Billy Corgan](https://www.youtube.com/watch?v=oUweXAt5OF4&t=181s)
 
-![line_6_99_060_2705_pod_go_wireless_pedalboard_1630122.jpg](Audio%20Project/line_6_99_060_2705_pod_go_wireless_pedalboard_1630122.jpg)
+![line_6_99_060_2705_pod_go_wireless_pedalboard_1630122.jpg](Images/line_6_99_060_2705_pod_go_wireless_pedalboard_1630122.jpg)
 
 Guitar Plugins: A software which simulates the eq characteristics of popular and sought after amplifiers. 
 
@@ -45,7 +45,7 @@ Key Features:
 - models multiple amplifiers in series
 - Only $200 for amplifiers and sounds that cost upwards of $10k
 
-![Neural DSP John Mayer plugin](Audio%20Project/UI-Archetype-John-Mayer-X.jpg)
+![Neural DSP John Mayer plugin](Images/UI-Archetype-John-Mayer-X.jpg)
 
 Neural DSP John Mayer plugin
 
@@ -57,7 +57,7 @@ Key features
 - customizability, allows users to change and experiment the settings of classic amps
 - expensive, costing over $1k
 
-![Kemper Profiler 600w PowerHead](Audio%20Project/KemperProfiler1.jpg.webp)
+![Kemper Profiler 600w PowerHead](Images/KemperProfiler1.jpg.webp)
 
 Kemper Profiler 600w PowerHead
 
@@ -69,6 +69,6 @@ Key features:
 - latency isn’t as much of an issue because its an expression pedal and doesn’t control the notes, but should be tested in hand
 - completely configurable with a DAW to control any signal you want, customizable
 
-![Boss EV-1-WL Wireless MIDI expression pedal](Audio%20Project/shopping.jpeg)
+![Boss EV-1-WL Wireless MIDI expression pedal](Images/shopping.jpeg)
 
 Boss EV-1-WL Wireless MIDI expression pedal
