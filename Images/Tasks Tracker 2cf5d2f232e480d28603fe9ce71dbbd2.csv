@@ -1,0 +1,5 @@
+﻿Task name,Status,Assignee,Due date,Priority,Attach file
+Create C implementation of .wav delay,Done,Adam Han Wu,12/20/2025 11:59 PM (PST),High,"Audio%20Project/main.cpp, Audio%20Project/headers.h, Audio%20Project/delay.cpp"
+"Create C implementation of Reverb, Distortion, Chorus, etc.",In progress,Adam Han Wu,12/22/2025,High,
+Live audio in/out delay pedal,Not started,,,Medium,
+MCU MIDI Controller,Not started,Adam Han Wu,,Low,
