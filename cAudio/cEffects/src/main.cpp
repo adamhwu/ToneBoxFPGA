@@ -85,8 +85,10 @@ int main() {
     Distortion distortion(3.0f, 0.9f, 2);
     Reverb reverb(wavHeader.sampleRate, 0.85f, 1.5f);
 
+    // effects chain
     std::vector<Effect*> effects = { &distortion, &delay };
 
+    // iterate through, applying each effect to the sample
     for (int i = 0; i < numSamples; ++i) {
         for (auto& effect : effects) {
             delayedSamples[i] = effect->process(delayedSamples[i]);
