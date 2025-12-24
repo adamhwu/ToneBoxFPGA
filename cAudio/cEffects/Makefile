@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Iinclude
 
-SRCS = src/main.cpp src/delay.cpp
+SRCS = src/main.cpp src/delay.cpp src/distortion.cpp src/reverb.cpp
 OBJS = $(SRCS:.cpp=.o)
 TARGET = delay
 

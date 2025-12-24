@@ -5,6 +5,8 @@
 #include <cstring>
 
 #include "delay.h"
+#include "distortion.h"
+#include "reverb.h"
 #include "headers.h"
 
 int main() {
@@ -79,10 +81,17 @@ int main() {
         delayedSamples[i] = static_cast<float>(samples[i]) / 32768.0f;
     }
 
-    Delay delay(wavHeader.sampleRate, 0.1f, 0.5f);
+    Delay delay(wavHeader.sampleRate, 0.08f, 0.3f);
+    Distortion distortion(3.0f, 0.9f, 2);
+    Reverb reverb(wavHeader.sampleRate, 0.85f, 1.5f);
+
+    std::vector<Effect*> effects = { &distortion, &delay };
 
     for (int i = 0; i < numSamples; ++i) {
-        delayedSamplesInt[i] = delay.process(delayedSamples[i]);
+        for (auto& effect : effects) {
+            delayedSamples[i] = effect->process(delayedSamples[i]);
+        }
+        delayedSamplesInt[i] = static_cast<int16_t>(delayedSamples[i] * 32768.0f);
     }
 
     std::ofstream MyFile("resources/output.wav", std::ios::binary);

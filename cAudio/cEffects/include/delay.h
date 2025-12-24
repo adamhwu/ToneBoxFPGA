@@ -1,12 +1,13 @@
 #pragma once
 #include <vector>
+#include "effect.h"
 
-class Delay {
+class Delay : public Effect {
 public:
-    Delay(int delaySamples, float feedback, float wet = 0.5f);
+    Delay(int delaySamples, float feedback, float mix = 0.5f);
 
     // Process a single sample
-    int16_t process(float input);
+    float process(float input);
 
     // Reset internal buffer
     void reset();
