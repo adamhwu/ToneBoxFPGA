@@ -6,7 +6,7 @@ CXXFLAGS := -std=c++17 -Wall -O2 -Isrc -Iinclude -I/opt/homebrew/Cellar/portaudi
 TARGET := realtime_fx
 
 # Source files (all .cpp in src/)
-SRCS := $(wildcard src/*.cpp)
+SRCS := $(wildcard src/*.cpp) $(wildcard src/effects/*.cpp)
 OBJS := $(SRCS:.cpp=.o)
 
 # PortAudio library
@@ -29,5 +29,5 @@ clean:
 	rm -f $(OBJS) $(TARGET)
 
 # Run
-test: $(TARGET)
+test:
 	./$(TARGET)
