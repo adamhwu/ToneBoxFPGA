@@ -4,7 +4,8 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/homebrew/Cellar/portaudio/19.7.0/include"
+                "/opt/homebrew/Cellar/portaudio/19.7.0/include",
+                "/opt/homebrew/Cellar/libsndfile/1.2.2_1/include"
             ],
             "defines": [],
             "cStandard": "c17",

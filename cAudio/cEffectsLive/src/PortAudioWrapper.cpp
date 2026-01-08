@@ -14,21 +14,24 @@ void showDevices() {
     }
 }
 
-int initPortAudio(PaStreamCallback audioCallback, PaStream* stream, AudioEngine* gEngine) {
+int initPortAudio(PaStreamCallback audioCallback, PaStream* stream, std::vector<Effect*>* effects) {
     PaStreamParameters inputParameters{};
     PaStreamParameters outputParameters{};
+    int n = 0;
 
     PaError err = Pa_Initialize();
     if (err != paNoError) goto error;
     showDevices();
+    std::cout << "Selecting device 1 for both input and output.\n";
+    std::cin >> n;
 
-    inputParameters.device = 1;
+    inputParameters.device = n;
     inputParameters.channelCount = 1;
     inputParameters.sampleFormat = paFloat32;
     inputParameters.suggestedLatency =
         Pa_GetDeviceInfo(inputParameters.device)->defaultLowInputLatency;
 
-    outputParameters.device = 1;
+    outputParameters.device = n;
     outputParameters.channelCount = 2;
     outputParameters.sampleFormat = paFloat32;
     outputParameters.suggestedLatency =
@@ -49,7 +52,7 @@ int initPortAudio(PaStreamCallback audioCallback, PaStream* stream, AudioEngine*
         FRAMES_PER_BUFFER,
         paClipOff,
         audioCallback,
-        gEngine
+        effects
     );
 
     if (err != paNoError) goto error;

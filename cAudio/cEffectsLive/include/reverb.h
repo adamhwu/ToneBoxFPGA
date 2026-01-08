@@ -8,7 +8,6 @@ public:
     // Process a single sample
     float process(float input) override;
 
-private:
     std::vector<float> buffer;
     float feedback;
     int index;
@@ -36,5 +35,6 @@ public:
 
 private:
 Comb comb1, comb2, comb3;
+Allpass allpass1, allpass2, allpass3;
 float mix;
 };

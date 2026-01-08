@@ -12,7 +12,6 @@ public:
     // Reset internal buffer
     void reset();
 
-private:
     std::vector<float> buffer;
     float feedback;
     float mix;

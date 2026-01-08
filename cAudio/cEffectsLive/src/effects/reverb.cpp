@@ -30,10 +30,14 @@ Reverb::Reverb(int sampleRate, float feedback, float decay)
     : comb1(sampleRate * 0.029f * decay, feedback),
         comb2(sampleRate * 0.037f * decay, feedback),
         comb3(sampleRate * 0.041f * decay, feedback),
+        allpass1(sampleRate * 0.005f, 0.7f),
+        allpass2(sampleRate * 0.005f, 0.7f),
+        allpass3(sampleRate * 0.005f, 0.7f),
         mix(0.3f) {}
 
 float Reverb::process(float input) {
-    float wet =
+    float wet = allpass1.process(input);
+    wet =
         comb1.process(input) +
         comb2.process(input) +
         comb3.process(input);

@@ -1,17 +1,15 @@
 #include <cmath>
 #include "distortion.h"
 
-Distortion::Distortion(float drive, float mix, int mode)
+Distortion::Distortion(float drive, float mix, std::string mode)
     : drive(drive), mix(mix), mode(mode) {}
 
 float Distortion::process(float input) {
-    float driven = input * drive;
     float distorted;
-
-    if (mode == 1) distorted = hardClip(driven);
-    else if (mode == 2) distorted = softClip(driven, drive);
-    else distorted = softClipPoly(driven);
-
+    float driven = input * drive/2;
+    distorted = screamer(driven);
+    driven = distorted * drive / 2;
+    distorted = softClip(driven);
     return mix * distorted + (1.0f - mix) * input;
 }
 
@@ -28,6 +26,10 @@ float Distortion::hardClip(float x) {
     return x;
 }
 
-float Distortion::softClip(float x, float drive) {
-    return std::tanh(drive * x);
+float Distortion::softClip(float x) {
+    return std::tanh(x);
+}
+
+float Distortion::screamer(float x) {
+    return (2.0f / M_PI) * std::atan(x);
 }

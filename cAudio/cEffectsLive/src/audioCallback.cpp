@@ -12,16 +12,18 @@ int audioCallback(
     PaStreamCallbackFlags,
     void* userData
 ) {
-    auto* engine = static_cast<AudioEngine*>(userData);
+    auto* effects = static_cast<std::vector<Effect*>*>(userData);
 
     const float* in = static_cast<const float*>(inputBuffer);
     float* out = static_cast<float*>(outputBuffer);
 
     for (unsigned long i = 0; i < framesPerBuffer; ++i) {
         float x = in ? in[i] : 0.0f;
-        for (auto* effect : engine->effects){
-            assert (effect != nullptr);
-            x = effect->process(x);
+        for (auto* effect : *effects){
+            if (effect->enabled.load() == true){
+                assert (effect != nullptr);
+                x = effect->process(x);
+            }
         }
 
         out[2*i] = x;
