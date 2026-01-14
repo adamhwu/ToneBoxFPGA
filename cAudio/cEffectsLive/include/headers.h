@@ -1,5 +1,4 @@
-#ifndef WAVHEADER_H
-#define WAVHEADER_H
+#pragma once
 
 #include <stdint.h>
 
@@ -34,4 +33,3 @@ struct WAVHeader {
 };
 
 #pragma pack(pop)
-#endif // WAVHEADER_H

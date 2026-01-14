@@ -81,12 +81,12 @@ int main() {
         delayedSamples[i] = static_cast<float>(samples[i]) / 32768.0f;
     }
 
-    Delay delay(wavHeader.sampleRate, 0.08f, 0.3f);
+    Delay delay(wavHeader.sampleRate, 0.18f, 0.5f);
     Distortion distortion(3.0f, 0.9f, 2);
     Reverb reverb(wavHeader.sampleRate, 0.85f, 1.5f);
 
     // effects chain
-    std::vector<Effect*> effects = { &distortion, &delay };
+    std::vector<Effect*> effects = { &reverb };
 
     // iterate through, applying each effect to the sample
     for (int i = 0; i < numSamples; ++i) {

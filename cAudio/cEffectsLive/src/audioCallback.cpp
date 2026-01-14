@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cassert>
 #include "audioCallback.h"
+#include "effect.h"
+#include "ringBuffer.cpp"
 
 int audioCallback(
     const void* inputBuffer,
@@ -12,7 +14,9 @@ int audioCallback(
     PaStreamCallbackFlags,
     void* userData
 ) {
-    auto* effects = static_cast<std::vector<Effect*>*>(userData);
+    auto* params = static_cast<paParameters*>(userData);
+    auto* effects = params->effects;
+    auto* ringBuffer = params->ringBuffer;
 
     const float* in = static_cast<const float*>(inputBuffer);
     float* out = static_cast<float*>(outputBuffer);
@@ -28,6 +32,7 @@ int audioCallback(
 
         out[2*i] = x;
         out[2*i+1] = x;
+        ringBuffer->write(x);
     }
     return paContinue;
 }
