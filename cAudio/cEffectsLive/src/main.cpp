@@ -19,10 +19,11 @@ int main() {
     Reverb reverb(SAMPLE_RATE, 0.85f, 1.5f);
     std::vector<Effect*> effects{ &distortion, &delay, &reverb };
 
-    RingBuffer ringBuffer;
-    FileWriter fileWriter(ringBuffer);
+    RingBuffer cleanBuf;
+    RingBuffer dirtyBuf;
+    FileWriter fileWriter(cleanBuf, dirtyBuf);
     PaStream* stream = nullptr;
-    paParameters paParams(&effects, &ringBuffer);
+    paParameters paParams(&effects, &cleanBuf, &dirtyBuf);
 
     int err = initPortAudio(audioCallback, stream, &paParams);
     if (err != paNoError) {
@@ -30,7 +31,6 @@ int main() {
         return -1;
     }
     fileWriter.startThread();
-
 
     // CLI loop
     char c;

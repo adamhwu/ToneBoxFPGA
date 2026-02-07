@@ -2,20 +2,24 @@
 
 struct RingBuffer;
 
+#include <sndfile.h>
+#include <atomic>
+#include <thread>
 
 class FileWriter {
 public:
-    FileWriter(RingBuffer& rb);
+    FileWriter(RingBuffer& cleanbuf, RingBuffer& dirtybuf);
     int startThread();
     bool isRecording() const { return recording_.load(); }
     int setRecording(bool rec);
     int stop();
 private:
-    SNDFILE* openNewWavFile();
-    int ring_read(float* output, int maxCount);
+    SNDFILE* openNewWavFile(const std::string& name, const int fileindex);
+    int ring_read(float* output, int maxCount, bool clean);
     void writerThread();
     std::atomic<bool> recording_;
     std::atomic<bool> running_;
     std::thread writer_;
-    RingBuffer& ringBuffer;
+    RingBuffer& cleanBuffer;
+    RingBuffer& dirtyBuffer;
 };

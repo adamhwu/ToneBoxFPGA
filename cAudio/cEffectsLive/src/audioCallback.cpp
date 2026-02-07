@@ -1,5 +1,4 @@
 #include <portaudio.h>
-#include <vector>
 #include <iostream>
 #include <cassert>
 #include "audioCallback.h"
@@ -16,13 +15,15 @@ int audioCallback(
 ) {
     auto* params = static_cast<paParameters*>(userData);
     auto* effects = params->effects;
-    auto* ringBuffer = params->ringBuffer;
+    auto* cleanBuf = params->cleanBuffer;
+    auto* dirtyBuf = params->dirtyBuffer;
 
     const float* in = static_cast<const float*>(inputBuffer);
     float* out = static_cast<float*>(outputBuffer);
 
     for (unsigned long i = 0; i < framesPerBuffer; ++i) {
         float x = in ? in[i] : 0.0f;
+        float x_clean = x;
         for (auto* effect : *effects){
             if (effect->enabled.load() == true){
                 assert (effect != nullptr);
@@ -32,7 +33,8 @@ int audioCallback(
 
         out[2*i] = x;
         out[2*i+1] = x;
-        ringBuffer->write(x);
+        cleanBuf->write(x_clean);
+        dirtyBuf->write(x);
     }
     return paContinue;
 }

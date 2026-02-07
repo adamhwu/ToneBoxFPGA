@@ -1,13 +1,11 @@
-#include <sndfile.h>
+#include <iostream>
 #include <string>
 #include <cstdio>
-#include <atomic>
-#include <thread>
 #include "fileWriter.h"
 #include "ringBuffer.cpp"
 
-FileWriter::FileWriter(RingBuffer& rb)
-    : recording_(false), running_(true), ringBuffer(rb) {}
+FileWriter::FileWriter(RingBuffer& cleanbuf, RingBuffer& dirtybuf)
+    : recording_(false), running_(true), cleanBuffer(cleanbuf), dirtyBuffer(dirtybuf) {}
 
 int FileWriter::startThread() {
     writer_ = std::thread(&FileWriter::writerThread, this);
@@ -15,59 +13,72 @@ int FileWriter::startThread() {
 }
 
 void FileWriter::writerThread() {
-    SNDFILE* file = nullptr;
-    float temp[512];
+    static int fileIndex = 0;
+    SNDFILE* cleanFile = nullptr;
+    SNDFILE* dirtyFile = nullptr;
+
+    float dirtyBuf[512];
+    float cleanBuf[512];
     while (this->running_.load()) {
         // If not recording, close file and wait 
         if (!recording_.load()) {
-            if (file) {
-                sf_close(file);
-                file = nullptr;
+            if (cleanFile) {
+                sf_close(cleanFile);
+                sf_close(dirtyFile);
+                cleanFile = nullptr;
+                dirtyFile = nullptr;
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
             continue;
         } 
+
         // if recording and file not opened, open new file
-        else if (!file) {
-            file = openNewWavFile();
-            ringBuffer.flush();
-            if (!file) continue;
+        else if (!cleanFile) {
+            cleanFile = openNewWavFile("clean", fileIndex);
+            dirtyFile = openNewWavFile("dirty", fileIndex);
+            fileIndex++;
+            cleanBuffer.flush();
+            dirtyBuffer.flush();
+            if (!cleanFile) continue;
+            if (!dirtyFile) continue;
         }
 
         // Consume audio
-        int frames = ring_read(temp, 512);
-        if (frames > 0) {
-            sf_write_float(file, temp, frames);
+        int cleanFrames = ring_read(cleanBuf, 512, true);
+        int dirtyFrames = ring_read(dirtyBuf, 512, false);
+        if (cleanFrames > 0) {
+            sf_write_float(cleanFile, cleanBuf, cleanFrames);
+            sf_write_float(dirtyFile, dirtyBuf, dirtyFrames);
         } else {
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
     }
     // Cleanup
-    if (file)
-        sf_close(file);
+    if (cleanFile) sf_close(cleanFile);
+    if (dirtyFile) sf_close(dirtyFile);
 }
 
-SNDFILE* FileWriter::openNewWavFile() {
-    static int fileIndex = 0;
-    char filename[64];
-    snprintf(filename, sizeof(filename), "recording_%03d.wav", fileIndex++);
+SNDFILE* FileWriter::openNewWavFile(const std::string& name, const int fileindex) {
+    std::string filename = name + "_" + std::to_string(fileindex) + ".wav";
 
     SF_INFO sfinfo{};
     sfinfo.channels = 1;                   // mono, change if needed
     sfinfo.samplerate = 44100;             // same as your audio stream
     sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
 
-    SNDFILE* file = sf_open(filename, SFM_WRITE, &sfinfo);
+    SNDFILE* file = sf_open(filename.c_str(), SFM_WRITE, &sfinfo);
     if (!file) {
-        printf("Error opening file '%s': %s\n", filename, sf_strerror(nullptr));
+        printf("Error opening file '%s': %s\n", filename.c_str(), sf_strerror(nullptr));
     }
     return file;
 }
 
-int FileWriter::ring_read(float* output, int maxCount) {
+int FileWriter::ring_read(float* output, int maxCount, bool clean) {
     int read = 0;
-    while (read < maxCount && ringBuffer.readIndex != ringBuffer.writeIndex) {
-        ringBuffer.read(&output[read]);
+    RingBuffer& buf = (clean) ? cleanBuffer : dirtyBuffer;
+
+    while (read < maxCount && buf.readIndex != buf.writeIndex) {
+        buf.read(&output[read]);
         read++;
     }
     return read;  // number of samples actually read

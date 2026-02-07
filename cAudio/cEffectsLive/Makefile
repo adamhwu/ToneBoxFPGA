@@ -1,6 +1,6 @@
 # Compiler
-CXX := g++
-CXXFLAGS := -std=c++17 -Wall -O2 -Isrc -Iinclude -I/opt/homebrew/Cellar/portaudio/19.7.0/include -I/opt/homebrew/Cellar/libsndfile/1.2.2_1/include
+CXX := g++ -g
+CXXFLAGS := -std=c++17 -Wall -O0 -Isrc -Iinclude -I/opt/homebrew/Cellar/portaudio/19.7.0/include -I/opt/homebrew/Cellar/libsndfile/1.2.2_1/include
 
 # Target executable
 TARGET := realtime_fx
@@ -18,7 +18,6 @@ LINK_FLAGS := -L$(LIBRARY_PATH)portaudio/19.7.0/lib -L$(LIBRARY_PATH)libsndfile/
 
 # Default rule
 all: $(TARGET)
-	rm -f $(OBJS)
 
 # Link step
 $(TARGET): $(OBJS)

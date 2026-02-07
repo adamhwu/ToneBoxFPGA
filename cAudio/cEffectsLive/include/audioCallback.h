@@ -5,10 +5,11 @@ struct RingBuffer;
 
 struct paParameters {
     std::vector<Effect*>* effects;
-    RingBuffer* ringBuffer;
+    RingBuffer* cleanBuffer;
+    RingBuffer* dirtyBuffer;
 
-    paParameters(std::vector<Effect*>* eff, RingBuffer* rb)
-        : effects(eff), ringBuffer(rb) {}
+    paParameters(std::vector<Effect*>* eff, RingBuffer* cleanBuf, RingBuffer* dirtyBuf)
+        : effects(eff), cleanBuffer(cleanBuf), dirtyBuffer(dirtyBuf) {}
 };
 
 int audioCallback(
