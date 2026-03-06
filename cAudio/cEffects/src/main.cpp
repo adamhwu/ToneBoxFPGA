@@ -75,6 +75,7 @@ int main() {
 
     std::vector<int16_t> samples(numSamples);
     file.read(reinterpret_cast<char*>(samples.data()), wavHeader.dataSize);
+    std::cout << samples.size() << std::endl;
     std::vector<float> delayedSamples(numSamples);
     std::vector<int16_t> delayedSamplesInt(numSamples);
     for (int i = 0; i < numSamples; ++i) {
