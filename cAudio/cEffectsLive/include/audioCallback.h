@@ -8,8 +8,13 @@ struct paParameters {
     RingBuffer* cleanBuffer;
     RingBuffer* dirtyBuffer;
 
-    paParameters(std::vector<Effect*>* eff, RingBuffer* cleanBuf, RingBuffer* dirtyBuf)
-        : effects(eff), cleanBuffer(cleanBuf), dirtyBuffer(dirtyBuf) {}
+    std::atomic<bool>* recording;
+    std::atomic<bool>* paused;
+
+    std::vector<float>* looperData;
+
+    paParameters(std::vector<Effect*>* eff, RingBuffer* cleanBuf, RingBuffer* dirtyBuf, std::atomic<bool>* recording, std::atomic<bool>* paused, std::vector<float>* looperData)
+        : effects(eff), cleanBuffer(cleanBuf), dirtyBuffer(dirtyBuf), recording(recording), paused(paused), looperData(looperData) {}
 };
 
 int audioCallback(

@@ -44,11 +44,11 @@ void FileWriter::writerThread() {
         }
 
         // Consume audio
-        int cleanFrames = ring_read(cleanBuf, 512, true);
-        int dirtyFrames = ring_read(dirtyBuf, 512, false);
-        if (cleanFrames > 0) {
-            sf_write_float(cleanFile, cleanBuf, cleanFrames);
-            sf_write_float(dirtyFile, dirtyBuf, dirtyFrames);
+        int cleanFramesCount = ring_read(cleanBuf, 512, true);
+        int dirtyFramesCount = ring_read(dirtyBuf, 512, false);
+        if (cleanFramesCount > 0) {
+            sf_write_float(cleanFile, cleanBuf, cleanFramesCount);
+            sf_write_float(dirtyFile, dirtyBuf, dirtyFramesCount);
         } else {
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }

@@ -1,6 +1,5 @@
-#include <portaudio.h>
+#include </opt/homebrew/include/portaudio.h>
 #include <iostream>
-#include <thread>
 
 #include "paWrapper.h"
 #include "delay.h"
@@ -21,9 +20,14 @@ int main() {
 
     RingBuffer cleanBuf;
     RingBuffer dirtyBuf;
+    std::vector<float> looperBuffer;
+    looperBuffer.resize(44100*30, 1.0f); // 30 seconds of audio at 44100 Hz
+    std::atomic<bool> recording_;
+    std::atomic<bool> paused_;
+    paused_.store(true);
     FileWriter fileWriter(cleanBuf, dirtyBuf);
     PaStream* stream = nullptr;
-    paParameters paParams(&effects, &cleanBuf, &dirtyBuf);
+    paParameters paParams(&effects, &cleanBuf, &dirtyBuf, &recording_, &paused_, &looperBuffer);
 
     int err = initPortAudio(audioCallback, stream, &paParams);
     if (err != paNoError) {
@@ -61,9 +65,12 @@ int main() {
             std::cout << "Distortion drive set to " << distortion.drive << "\n";
         }
         else if (c == 's') {
-            bool rec = fileWriter.isRecording();
-            fileWriter.setRecording(!rec);
-            std::cout << "Recording " << (!rec ? "started" : "stopped") << "\n";
+            recording_.store(!recording_.load());
+            std::cout << "recording " << (recording_ ? "started" : "stopped") << "\n";
+        }
+        else if (c == 'p') {
+            paused_.store(!paused_);
+            std::cout << "Looping " << (!paused_ ? "started" : "stopped") << "\n";
         }
 
         std::cout << "distortion: " << (distortion.enabled.load() ? "on" : "off") << ", "

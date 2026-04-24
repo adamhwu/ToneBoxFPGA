@@ -53,6 +53,7 @@ void FileWriter::writerThread() {
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
     }
+
     // Cleanup
     if (cleanFile) sf_close(cleanFile);
     if (dirtyFile) sf_close(dirtyFile);

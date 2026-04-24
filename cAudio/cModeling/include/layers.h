@@ -7,7 +7,7 @@
 #include "layers.h"
 
 #define LM_SIZE 20
-#define NL_BREAKPOINTS 100
+#define NL_BREAKPOINTS 30
 
 namespace fs = std::filesystem;
 

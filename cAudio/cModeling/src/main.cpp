@@ -10,7 +10,7 @@ int main() {
     std::vector<int16_t> samples;
     std::vector<double> floatSamples; // try fixed point representation
     // read .wav file into samples buffer
-    readWAV("resources/clean3.wav", wavHeader, samples);
+    readWAV("resources/clean_0.wav", wavHeader, samples);
     int numSamples = samples.size();
     std::cout << numSamples << std::endl;
 
@@ -42,9 +42,9 @@ int main() {
         floatSamples[i] /= max;
 
     // create layer objects
-    PiecewiseLinear* inl = new PiecewiseLinear("weights/inl_coeffs_large.csv");
-    PiecewiseLinear* onl = new PiecewiseLinear("weights/onl_coeffs_large.csv");
-    LinearModel* lm = new LinearModel("weights/lm_coeffs_large.csv");
+    PiecewiseLinear* inl = new PiecewiseLinear("weights/inl_coeffsTSL.csv");
+    PiecewiseLinear* onl = new PiecewiseLinear("weights/onl_coeffsTSL.csv");
+    LinearModel* lm = new LinearModel("weights/lm_coeffs_TSL.csv");
 
     // iterate through, applying each layer to the sample
     double temp;

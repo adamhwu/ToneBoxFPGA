@@ -1,6 +1,7 @@
 #include <portaudio.h>
 #include <iostream>
 #include <thread>
+#include <fstream>
 
 #include "paWrapper.h"
 #include "delay.h"
@@ -10,6 +11,7 @@
 #include "audioCallback.h"
 #include "ringBuffer.cpp"
 #include "fileWriter.h"
+#include "readWav.h"
 
 
 int main() {
@@ -64,6 +66,17 @@ int main() {
             bool rec = fileWriter.isRecording();
             fileWriter.setRecording(!rec);
             std::cout << "Recording " << (!rec ? "started" : "stopped") << "\n";
+        }
+        else if (c == 'f') {
+            std::vector<int16_t> clean, dirty;
+            readWAV("../clean_0.wav", clean);
+            readWAV("../clean_0.wav", dirty);
+
+            std::ofstream refFile("references/output.csv");
+            for (const auto& value : clean)
+                refFile << value << "\n";
+            refFile.close();
+
         }
 
         std::cout << "distortion: " << (distortion.enabled.load() ? "on" : "off") << ", "

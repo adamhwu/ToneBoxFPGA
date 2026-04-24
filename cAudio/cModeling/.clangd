@@ -1,0 +1,5 @@
+CompileFlags:
+  Add: [
+    "-IUsers/adamhwu/Developer/ToneBoxFPGA/cAudio/cModeling/include",
+    "-std=c++17"
+  ]
