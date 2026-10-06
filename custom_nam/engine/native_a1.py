@@ -13,7 +13,7 @@ import sys
 HERE = Path(__file__).resolve().parent
 SOURCE = HERE / "a1_native.cpp"
 JSON_HEADER = HERE / "vendor" / "json.hpp"
-LIBRARY = HERE / "build" / (
+LIBRARY = HERE.parent / "build" / (
     "liba1_native.dylib" if sys.platform == "darwin" else "liba1_native.so"
 )
 

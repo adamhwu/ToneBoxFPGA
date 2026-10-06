@@ -17,4 +17,4 @@ if [[ ! -x custom_nam/.venv/bin/python ]]; then
   python3 -m venv custom_nam/.venv
 fi
 
-custom_nam/.venv/bin/python custom_nam/verify_headless.py
+custom_nam/.venv/bin/python -m custom_nam.tests.verify_headless

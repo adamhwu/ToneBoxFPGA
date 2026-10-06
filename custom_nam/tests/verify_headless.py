@@ -6,7 +6,7 @@ import ctypes as C
 import json
 from pathlib import Path
 
-from native_a1 import NativeA1
+from custom_nam.engine.native_a1 import NativeA1
 
 
 HERE = Path(__file__).resolve().parent

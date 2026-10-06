@@ -8,12 +8,12 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from a1_model import A1Streamer, load_nam
-from native_a1 import NativeA1
+from custom_nam.engine.a1_model import A1Streamer, load_nam
+from custom_nam.engine.native_a1 import NativeA1
 
 
 def main() -> None:
-    path = Path(__file__).with_name("output.nam")
+    path = Path(__file__).resolve().parents[1] / "data" / "output.nam"
     torch.set_num_threads(1)
     reference_model, sample_rate = load_nam(path)
     reference = A1Streamer(reference_model)

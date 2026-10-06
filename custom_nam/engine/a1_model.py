@@ -4,7 +4,7 @@ Loads the architecture and flattened weights from a trainer-exported ``.nam``
 file. It deliberately does not import NAM's Python model implementation.
 
 Usage:
-    python a1_model.py output.nam clean_1.wav dirty_1.wav
+    python -m custom_nam.engine.a1_model custom_nam/data/output.nam custom_nam/data/clean_1.wav custom_nam/data/dirty_1.wav
 
 The model runs at the sample rate stored in the .nam file. Audio at another
 rate is resampled for inference and resampled back for the output WAV.

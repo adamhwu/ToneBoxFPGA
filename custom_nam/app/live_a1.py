@@ -1,7 +1,7 @@
 """Live Focusrite monitor for an A1 .nam capture.
 
-Run from this directory with ``python3 live_a1.py``. The app uses this
-directory's output.nam by default, the locally built C++ A1 processor for
+Run from the repository root with ``python3 -m custom_nam.app.live_a1``.
+The app uses ``custom_nam/data/output.nam`` by default and the locally built C++ A1 processor for
 all audio computation, and the installed PortAudio library for audio I/O.
 No Python audio package or global package installation is required.
 
@@ -19,7 +19,7 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import messagebox, ttk
 
-from native_a1 import NativeA1
+from custom_nam.engine.native_a1 import NativeA1
 
 
 SAMPLE_FORMAT_FLOAT32 = 0x00000001
@@ -356,8 +356,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "model", nargs="?", type=Path,
-        default=Path(__file__).with_name("output.nam"),
-        help="A1 .nam model (default: custom_nam/output.nam)",
+        default=Path(__file__).resolve().parents[1] / "data" / "output.nam",
+        help="A1 .nam model (default: custom_nam/data/output.nam)",
     )
     parser.add_argument("--list-devices", action="store_true")
     args = parser.parse_args()
