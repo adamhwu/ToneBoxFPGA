@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+build/
+*.wav
+*.nam
+!fixtures/a1_test.nam

@@ -1,5 +1,15 @@
 # ToneBoxFPGA
 
+## Codex Cloud development
+
+The Neural Amp Modeler A1 implementation is in [`custom_nam/`](custom_nam/README.md). A fresh Linux checkout can build and test its C++ engine without audio hardware:
+
+```sh
+bash scripts/codex-cloud-setup.sh
+```
+
+In Codex Cloud, create an environment for this GitHub repository and use that command as its install script. The script creates a project-local virtual environment, builds the C++ library, and checks its output against a synthetic fixture. The real `output.nam` capture and `.wav` recordings are excluded from Git because this repository is public. Focusrite and GUI tests must run on a local computer. See [OpenAI's cloud environment guide](https://learn.chatgpt.com/docs/environments/cloud-environments) for the environment publishing steps.
+
 Goal: To create and explore FPGA/MCU based guitar effects solutions, creating something that is cheaper, technically advanced, and great-sounding without buying off the shelf guitar gear. 
 
 ## Big Picture Product:
